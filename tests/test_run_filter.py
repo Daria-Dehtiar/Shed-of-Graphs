@@ -3,7 +3,7 @@ import subprocess
 
 def test_run_filter_no_arguments():
     result = subprocess.run(
-        ["bash", "../run_filter.sh"],
+        ["bash", "run_filter.sh"],
         capture_output = True,
         text = True
     )
@@ -13,7 +13,7 @@ def test_run_filter_no_arguments():
 
 def test_run_filter_only_vertices():
     result = subprocess.run(
-        ["bash", "../run_filter.sh", "5"],
+        ["bash", "run_filter.sh", "5"],
         capture_output=True,
         text=True
     )
@@ -22,7 +22,7 @@ def test_run_filter_only_vertices():
 
 def test_run_filter_only_rules():
     result = subprocess.run(
-        ["bash", "../run_filter.sh", '{"type": "exact", "count": 1, "sum": 1}'],
+        ["bash", "run_filter.sh", '{"type": "exact", "count": 1, "sum": 1}'],
         capture_output=True,
         text=True
     )
@@ -32,7 +32,7 @@ def test_run_filter_only_rules():
 
 def test_run_filter_invalid_number_of_vertices():
     result = subprocess.run(
-        ["bash", "../run_filter.sh", "five", '{"type": "exact", "count": 1, "sum": 1}'],
+        ["bash", "run_filter.sh", "five", '{"type": "exact", "count": 1, "sum": 1}'],
         capture_output=True,
         text=True
     )
