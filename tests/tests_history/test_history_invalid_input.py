@@ -21,7 +21,7 @@ def test_save_history_invalid_input_output_count(tmp_path):
     rules = {"type": "max", "count": 11, "sum": 19}
     passed_graphs = ["DJ?", "DOk", "DOG", "Dgw", "D??"]
 
-    with pytest.raises(TypeError, match = "Rules must be a list or a dict."):
+    with pytest.raises(TypeError, match = "Input count and output count must be integers."):
         save_history(rules, "six", "five", passed_graphs, str(filename))
 
 

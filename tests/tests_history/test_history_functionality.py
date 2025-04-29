@@ -19,7 +19,7 @@ def test_save_history_writes_correct_data_exact_rule(tmp_path):
     filename = generate_filename(tmp_path, "writes_correct_data_exact_rule")
     rules = [{"type": "exact", "count": 1, "sum": 7}]
     passed_graphs = ["ILwG@wHQO", "IEEm{?LyG", "IPGO?_?G?", "I`HKPKGg?", "ICDTGANhw"]
-    save_history(rules, 9, 8, passed_graphs, str(filename))
+    save_history(rules, 9, 5, passed_graphs, str(filename))
 
     content = filename.read_text().strip()
     fields = content.split("\t")
@@ -27,7 +27,7 @@ def test_save_history_writes_correct_data_exact_rule(tmp_path):
 
     assert json.dumps(rules) == fields[3]
     assert "9" == fields[1]
-    assert "8" == fields[2]
+    assert "5" == fields[2]
 
     written_passed_graphs = eval(fields[4])
     assert written_passed_graphs == passed_graphs
@@ -57,7 +57,7 @@ def test_save_history_full_verification(tmp_path):
     passed_graphs = ["D?{", "DBc", "Dh_", "D@{", "Dx_", "DJc", "DbW", "Dhc", "DjW", "Db[", "D`{", "Dlc"]
     random_graph_from_passed_graphs = random.choice(passed_graphs)
 
-    save_history(rules, 21, 21, passed_graphs, str(filename))
+    save_history(rules, 21, 12, passed_graphs, str(filename))
 
     content = filename.read_text().strip()
     fields = content.split("\t")
@@ -73,6 +73,6 @@ def test_save_history_full_verification(tmp_path):
     assert_timestamps_are_close(timestamp, timestamp_str_from_filename)
 
     assert int(input_number) == 21
-    assert int(output_number) == 21
+    assert int(output_number) == 12
     assert json.loads(filter_string) == [{"type": "min", "count": 1, "sum": 4}]
     assert random_graph_from_passed_graphs in passed_graphs_str

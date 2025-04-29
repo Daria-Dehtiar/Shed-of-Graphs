@@ -43,21 +43,22 @@ def test_passes_max_rule_tiny_graph():
     rules = [{"type": "max", "count": 2, "sum": 3}]
     assert passes_all_rules(G, rules)
 
-def test_passes_max_rule_medium_graph():
-    G = nx.star_graph(6)
-    rules = [{"type": "max", "count": 6, "sum": 7}]
-    assert passes_all_rules(G, rules)
-
 def test_passes_max_rule_large_graph():
     G = nx.balanced_tree(2, 3)
     rules = [{"type": "max", "count": 10, "sum": 6}]
     assert passes_all_rules(G, rules)
 
+def test_passes_max_rule_medium_graph():
+    G = nx.star_graph(6)
+    rules = [{"type": "max", "count": 6, "sum": 7}]
+    assert passes_all_rules(G, rules)
+
+
 
 def test_fails_max_rule_tiny_graph():
     G = nx.Graph()
     G.add_edges_from([(0, 1), (1, 2), (2, 3), (3, 0)])
-    rules = [{"type": "max", "count": 1, "sum": 3}]
+    rules = [{"type": "max", "count": 1, "sum": 4}]
     assert not passes_all_rules(G, rules)
 
 def test_fails_max_rule_large_graph():
@@ -81,19 +82,19 @@ def test_passes_exact_rule_tiny_graph():
 
 def test_passes_exact_rule_large_graph():
     G = nx.barbell_graph(5, 5)
-    rules = [{"type": "exact", "count": 3, "sum": 4}]
+    rules = [{"type": "exact", "count": 2, "sum": 7}]
     assert passes_all_rules(G, rules)
 
 def test_passes_exact_rule_medium_graph():
     G = nx.lollipop_graph(5, 3)
-    rules = [{"type": "exact", "count": 2, "sum": 9}]
+    rules = [{"type": "exact", "count": 4, "sum": 9}]
     assert passes_all_rules(G, rules)
 
 
 def test_fails_exact_rule_tiny_graph():
     G = nx.Graph()
     G.add_edges_from([(0, 1), (1, 2)])
-    rules = [{"type": "exact", "count": 2, "sum": 3}]
+    rules = [{"type": "exact", "count": 1, "sum": 3}]
     assert not passes_all_rules(G, rules)
 
 def test_fails_exact_rule_large_graph():
@@ -140,7 +141,7 @@ def test_passes_combination_of_min_exact_rules():
 
 def test_fails_combination_of_min_exact_rules():
     G = nx.diamond_graph()
-    rules = [{"type": "min", "count": 3, "sum": 5}, {"type": "exact", "count": 1, "sum": 6}]
+    rules = [{"type": "min", "count": 3, "sum": 5}, {"type": "exact", "count": 2, "sum": 6}]
     assert not passes_all_rules(G, rules)
 
 

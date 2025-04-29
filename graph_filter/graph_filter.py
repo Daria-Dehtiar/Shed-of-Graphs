@@ -48,9 +48,9 @@ def passes_all_rules(graph, rules):
 
         if rule["type"] == "exact" and count != rule["count"]:
             return False
-        if rule["type"] == "min" and count <= rule["count"]:
+        if rule["type"] == "min" and count < rule["count"]:
             return False
-        if rule["type"] == "max" and count >= rule["count"]:
+        if rule["type"] == "max" and count > rule["count"]:
             return False
     return True
 
@@ -72,7 +72,7 @@ def save_history(rules, input_count, output_count, passed_graphs, history_filena
     if len(passed_graphs) < 20 and len(passed_graphs) != output_count:
         raise ValueError("The number of recently passed graphs must be equal to output count if fewer than 20.")
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     recent_passed = passed_graphs[-20:]
     filter_str = json.dumps(rules)
 
@@ -82,7 +82,7 @@ def save_history(rules, input_count, output_count, passed_graphs, history_filena
 
 
 def main():
-    if len(sys.argv) != 1:
+    if len(sys.argv) != 2:
         print("Usage: python graph_filter.py <rules_json>", file=sys.stderr)
         sys.exit(1)
 
