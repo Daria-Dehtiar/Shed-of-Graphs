@@ -1,5 +1,5 @@
 import pytest
-from graph_filter import *
+from graph_filter.graph_filter import *
 
 
 def test_rules_invalid_json_string():

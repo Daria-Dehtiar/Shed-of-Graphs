@@ -1,6 +1,6 @@
 import pytest
 import io
-from graph_filter import *
+from graph_filter.graph_filter import *
 
 
 def test_filter_no_rules(monkeypatch, capsys):
