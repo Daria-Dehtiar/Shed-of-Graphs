@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+  echo "Usage: ../run_filter.sh <number_of_vertices> <rules_json>" >&2
+  exit 1
+fi
+
+VERTICES=$1
+FILTER="$2"
+
+if ! [[ "$VERTICES" =~ ^[0-9]+$ ]]; then
+  echo "Error: number_of_vertices must be a positive integer." >&2
+  exit 1
+fi
+
+HISTORY_DIR="${HOME}/.history"
+mkdir -p "$HISTORY_DIR"
+
+TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+HISTORY_FILE="${HISTORY_DIR}/history_${VERTICES}_${TIMESTAMP}.log"
+
+nauty-geng "$VERTICES" | python3 graph_filter.py "$FILTER" "$HISTORY_FILE"

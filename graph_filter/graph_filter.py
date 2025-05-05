@@ -1,7 +1,6 @@
 import json
 import sys
 from datetime import datetime
-
 import networkx as nx
 
 
@@ -67,10 +66,8 @@ def save_history(rules, input_count, output_count, passed_graphs, history_filena
 
     if output_count > input_count:
         raise ValueError("Output count must be less than or equal to input count.")
-    if len(passed_graphs) > 20:
-        raise ValueError("The number of recently passed graphs must be less than or equal to 20.")
-    if len(passed_graphs) < 20 and len(passed_graphs) != output_count:
-        raise ValueError("The number of recently passed graphs must be equal to output count if fewer than 20.")
+    if len(passed_graphs) != output_count:
+        raise ValueError("The number of passed graphs must be equal to output count.")
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     recent_passed = passed_graphs[-20:]
@@ -82,11 +79,13 @@ def save_history(rules, input_count, output_count, passed_graphs, history_filena
 
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python graph_filter.py <rules_json>", file=sys.stderr)
+    if len(sys.argv) != 3:
+        print("Usage: python graph_filter.py <rules_json> <history_filename>", file=sys.stderr)
         sys.exit(1)
 
     rules_str = sys.argv[1]
+    history_filename = sys.argv[2]
+
     rules = parse_rules(rules_str)
     validate_rules(rules)
 
@@ -111,10 +110,9 @@ def main():
             passed_graphs.append(line)
             output_count += 1
 
-    history_filename = f"history_{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.log"
     save_history(rules, input_count, output_count, passed_graphs, history_filename)
-
     return input_count, output_count, passed_graphs
+
 
 if __name__ == "__main__":
     main()
