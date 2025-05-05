@@ -7,7 +7,7 @@ SCRIPT_PATH = "/home/daria-dehtiar/Shed-of-graphs-Dehtiar/graph_filter/run_filte
 
 def test_run_filter_no_arguments():
     result = subprocess.run(
-        ["bash", SCRIPT_PATH],
+        ["bash", "../../graph_filter/run_filter.sh"],
         capture_output = True,
         text = True
     )
@@ -17,7 +17,7 @@ def test_run_filter_no_arguments():
 
 def test_run_filter_only_vertices():
     result = subprocess.run(
-        ["bash", SCRIPT_PATH, "5"],
+        ["bash", "../../graph_filter/run_filter.sh", "5"],
         capture_output=True,
         text=True
     )
@@ -26,7 +26,7 @@ def test_run_filter_only_vertices():
 
 def test_run_filter_only_rules():
     result = subprocess.run(
-        ["bash", SCRIPT_PATH, '{"type": "exact", "count": 1, "sum": 1}'],
+        ["bash", "../../graph_filter/run_filter.sh", '{"type": "exact", "count": 1, "sum": 1}'],
         capture_output=True,
         text=True
     )
@@ -36,7 +36,7 @@ def test_run_filter_only_rules():
 
 def test_run_filter_invalid_number_of_vertices():
     result = subprocess.run(
-        ["bash", SCRIPT_PATH, "five", '{"type": "exact", "count": 1, "sum": 1}'],
+        ["bash", "../../graph_filter/run_filter.sh", "five", '{"type": "exact", "count": 1, "sum": 1}'],
         capture_output=True,
         text=True
     )
