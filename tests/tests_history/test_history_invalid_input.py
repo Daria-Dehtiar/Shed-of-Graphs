@@ -1,5 +1,5 @@
 import pytest
-from graph_filter.graph_filter import *
+from graph_filter.filter_util import *
 
 
 def generate_filename(tmp_path, test_name):
@@ -56,7 +56,7 @@ def test_save_history_output_greater_than_input(tmp_path):
 def test_save_history_passed_graphs_mismatch(tmp_path):
     filename = generate_filename(tmp_path, "passed_graphs_mismatch")
     rules = {"type": "max", "count": 11, "sum": 19}
-    invalid_passed_graphs = ["DJ?", "DOk", "DOG", "Dgw", "D??"]
+    passed_graphs = ["DJ?", "DOk", "DOG", "Dgw", "D??"]
 
     with pytest.raises(ValueError, match = "The number of passed graphs must be equal to output count."):
-        save_history(rules, 10, 6, invalid_passed_graphs, str(filename))
+        save_history(rules, 10, 6, passed_graphs, str(filename))

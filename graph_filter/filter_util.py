@@ -2,6 +2,8 @@ import json
 import sys
 from datetime import datetime
 import networkx as nx
+import os
+import matplotlib.pyplot as plt
 
 
 def parse_rules(rules_str):
@@ -70,49 +72,45 @@ def save_history(rules, input_count, output_count, passed_graphs, history_filena
         raise ValueError("The number of passed graphs must be equal to output count.")
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    recent_passed = passed_graphs[-20:]
     filter_str = json.dumps(rules)
 
     with open(history_filename, "a") as history_file:
-        history_file.write(f"{timestamp}\t{input_count}\t{output_count}\t{filter_str}\t{recent_passed}\n")
+        history_file.write(f"{timestamp}\t{input_count}\t{output_count}\t{filter_str}\t{passed_graphs}\n")
 
 
+def export_graphs(graphs, image_folder, image_format):
+    if not graphs:
+        print("No graphs are found to export.")
+        return
 
-def main():
-    if len(sys.argv) != 3:
-        print("Usage: python graph_filter.py <rules_json> <history_filename>", file=sys.stderr)
+    if image_format.lower() not in plt.gcf().canvas.get_supported_filetypes():
+        print(f"Image format {image_format} is not supported.", file=sys.stderr)
         sys.exit(1)
 
-    rules_str = sys.argv[1]
-    history_filename = sys.argv[2]
+    try:
+        image_folder_expanded = os.path.expanduser(image_folder)
+        os.makedirs(image_folder_expanded, exist_ok=True)
 
-    rules = parse_rules(rules_str)
-    validate_rules(rules)
+        timestamp_folder = f"recently_passed_graphs_{datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}"
+        full_folder_path = os.path.join(image_folder_expanded, timestamp_folder)
+        os.makedirs(full_folder_path, exist_ok=True)
 
-    input_count = 0
-    output_count = 0
-    passed_graphs = []
+    except Exception as e:
+        print(f"Failed to create export directory: {e}", file=sys.stderr)
+        sys.exit(1)
 
-    for line in sys.stdin:
-        line = line.strip()
-        if not line:
-            continue
-        input_count += 1
-
+    for index, graph in enumerate(graphs, 1):
         try:
-            G = nx.from_graph6_bytes(line.encode())
+            G = nx.from_graph6_bytes(graph.encode())
+
+            plt.figure(figsize=(5, 5))
+            pos = nx.spring_layout(G)
+            nx.draw(G, pos, node_size=25)
+
+            image_file_name = os.path.join(full_folder_path, f"graph_{index:02d}.{image_format}")
+            plt.savefig(image_file_name, format=image_format)
+            plt.close()
+
         except Exception as e:
-            print(f"Error parsing graph: {e}", file=sys.stderr)
+            print(f"Failed to export graph #{index:02d}: {e}", file=sys.stderr)
             continue
-
-        if passes_all_rules(G, rules):
-            print(line)
-            passed_graphs.append(line)
-            output_count += 1
-
-    save_history(rules, input_count, output_count, passed_graphs, history_filename)
-    return input_count, output_count, passed_graphs
-
-
-if __name__ == "__main__":
-    main()

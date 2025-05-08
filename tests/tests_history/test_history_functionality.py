@@ -1,5 +1,5 @@
 import random
-from graph_filter.graph_filter import *
+from graph_filter.filter_util import *
 
 
 def generate_filename(tmp_path, test_name):
