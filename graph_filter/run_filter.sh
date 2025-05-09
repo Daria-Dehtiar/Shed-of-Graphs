@@ -21,4 +21,4 @@ mkdir -p "$HISTORY_DIR"
 TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
 HISTORY_FILE="${HISTORY_DIR}/history_${VERTICES}_${TIMESTAMP}.log"
 
-nauty-geng "$VERTICES" | python3 filter_main.py "$FILTER" "$HISTORY_FILE" "$@"
+nauty-geng "$VERTICES" | python3 "$(dirname "$0")/filter_main.py" "$FILTER" "$HISTORY_FILE" "$@"

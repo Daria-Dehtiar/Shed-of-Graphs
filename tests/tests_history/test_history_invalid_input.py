@@ -58,5 +58,5 @@ def test_save_history_passed_graphs_mismatch(tmp_path):
     rules = {"type": "max", "count": 11, "sum": 19}
     passed_graphs = ["DJ?", "DOk", "DOG", "Dgw", "D??"]
 
-    with pytest.raises(ValueError, match = "The number of passed graphs must be equal to output count."):
-        save_history(rules, 10, 6, passed_graphs, str(filename))
+    with pytest.raises(ValueError, match = "The number of passed graphs must be less than or equal to output count."):
+        save_history(rules, 10, 4, passed_graphs, str(filename))

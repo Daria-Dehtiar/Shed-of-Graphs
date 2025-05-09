@@ -68,8 +68,8 @@ def save_history(rules, input_count, output_count, passed_graphs, history_filena
 
     if output_count > input_count:
         raise ValueError("Output count must be less than or equal to input count.")
-    if len(passed_graphs) != output_count:
-        raise ValueError("The number of passed graphs must be equal to output count.")
+    if len(passed_graphs) > output_count:
+        raise ValueError("The number of passed graphs must be less than or equal to output count.")
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filter_str = json.dumps(rules)

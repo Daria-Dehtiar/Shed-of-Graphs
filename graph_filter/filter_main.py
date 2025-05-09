@@ -1,10 +1,10 @@
-from graph_filter.filter_util import *
+from filter_util import *
 
 
 def main():
     if len(sys.argv) < 3:
-        print("Usage: python filter_main.py <rules_json> <history_filename> [--export image_folder] [--image_format"
-              "format]", file=sys.stderr)
+        print("Usage: python filter_main.py <rules_json> <history_filename> [--export] [--image_format format]",
+              file=sys.stderr)
         sys.exit(1)
 
 
@@ -16,11 +16,7 @@ def main():
     image_format = None
 
     if "--export" in sys.argv:
-        index = sys.argv.index("--export")
-        if (index + 1) < len(sys.argv) and not sys.argv[index + 1].startswith("--"):
-            export_dir = sys.argv[index + 1]
-        else:
-            export_dir = os.path.expanduser("~/.graph_images")
+        export_dir = os.path.expanduser("~/.graph_images")
 
     if "--image_format" in sys.argv:
         index = sys.argv.index("--image_format")

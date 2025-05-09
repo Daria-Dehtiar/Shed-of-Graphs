@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filtered Graphs</title>
+    <style>
+        h1 {
+            color: cornflowerblue;
+            font-family: "Space Mono", monospace;
+            font-size: 60px;
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 75px;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px #ccc;
+        }
+        body {
+            font-family: Verdana, sans-serif;
+            font-size: 16px;
+            padding-bottom: 60px
+        }
+        table {
+            width: 75%;
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+            height: 35px;
+        }
+        tr:hover {
+            background-color: #7BAFEF;
+        }
+        td:first-child, th:first-child {
+            border-right: 1px solid #ccc
+        }
+        td:nth-child(2), th:nth-child(2) {
+            border-right: 1px solid #ccc;
+        }
+        div {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            margin-top: 60px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button[type="submit"] {
+            width: 100%;
+            background-color: #7BAFEF;
+            color: black;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: Verdana, sans-serif;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: cornflowerblue;
+        }
+    </style>
+</head>
+<body>
+    <h1>The most recently filtered graphs</h1>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Graph6</th>
+            <th>Image</th>
+        </tr>
+        {% for graph, image in paired_data %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ graph }}</td>
+                <td>
+                <img src="{{ url_for('static', filename='graphs/' ~ image) }}" height="200" alt="Image of {{ graph }}">
+                </td>
+                </tr>
+        {% endfor %}
+    </table>
+    <div>
+        <form method="post", action="/generate">
+            <label for="nb_vertices">Number of vertices:</label><br>
+            <input type="number" id="nb_vertices" name="nb_vertices" min="1" required><br><br>
+
+            <label for="filter_rule">Enter the rule for filtering (as JSON):</label><br>
+            <input type="text" id="filter_rule" name="filter_rule" required><br><br>
+
+            <button type="submit">Generate graphs</button>
+        </form>
+    </div>
+</body>
+</html>
