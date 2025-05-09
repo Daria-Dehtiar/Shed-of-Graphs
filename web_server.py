@@ -46,6 +46,10 @@ def generate():
 
 
 def find_latest_history_file():
+    if not os.path.exists(HISTORY_DIR):
+        print(f"History directory {HISTORY_DIR} doesn't exist. Creating it.")
+        os.makedirs(HISTORY_DIR, exist_ok=True)
+
     files = []
 
     for file in os.listdir(HISTORY_DIR):
@@ -58,6 +62,10 @@ def find_latest_history_file():
     return max(files, key=os.path.getmtime)
 
 def find_latest_image_folder():
+    if not os.path.exists(IMAGE_DIR):
+        print(f"Image directory {IMAGE_DIR} doesn't exist. Creating it.")
+        os.makedirs(IMAGE_DIR, exist_ok=True)
+
     image_folders = []
 
     for folder in os.listdir(IMAGE_DIR):
@@ -141,4 +149,4 @@ def run_graph_filter(n, rules):
         return False
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
