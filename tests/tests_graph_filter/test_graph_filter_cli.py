@@ -1,7 +1,11 @@
+import os
+
 import pytest
 import io
-from graph_filter.filter_main import *
+import sys
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../graph_filter')))
+from graph_filter import filter_main
 
 
 def make_history_file(tmp_path):
@@ -14,7 +18,7 @@ def test_filter_no_rules(monkeypatch, capsys, tmp_path):
     monkeypatch.setattr(sys, "argv", ["filter_main.py", history_file])
 
     with pytest.raises(SystemExit) as error:
-        main()
+        filter_main.main()
     captured = capsys.readouterr()
 
     assert "Usage: python filter_main.py <rules_json>" in captured.err
@@ -27,7 +31,7 @@ def test_filter_no_graphs(monkeypatch, capsys, tmp_path):
     monkeypatch.setattr(sys, "argv", ["filter_main.py", '{"type": "exact", "count": 1, "sum": 1}', history_file])
     monkeypatch.setattr(sys, "stdin", io.StringIO(""))
 
-    input_count, output_count, passed_graphs, = main()
+    input_count, output_count, passed_graphs, = filter_main.main()
     captured = capsys.readouterr()
 
     assert captured.out.strip() == ""
@@ -46,7 +50,7 @@ def test_filter_invalid_graph_(monkeypatch, capsys, tmp_path):
     invalid_graph_input = io.StringIO("this_is_not_a_valid_graph\n")
     monkeypatch.setattr(sys, 'stdin', invalid_graph_input)
 
-    input_count, output_count, passed_graphs = main()
+    input_count, output_count, passed_graphs = filter_main.main()
     captured = capsys.readouterr()
 
     assert "Error parsing graph" in captured.err
