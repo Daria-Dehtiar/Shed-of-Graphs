@@ -25,7 +25,7 @@ for RES in $(seq 0 $((BATCHES -1))); do
   echo "Starting batch $RES/$BATCHES"
 
   HISTORY_PAR_FILE="${HISTORY_PAR_DIR}/history_batch_${RES}_of_${BATCHES}_${VERTICES}_${TIMESTAMP}.log"
-  nauty-geng "$VERTICES" -q ${RES}/${BATCHES}  | python3 ../graph_filter.py "$FILTER" "$HISTORY_PAR_FILE" > /dev/null
+  nauty-geng "$VERTICES" -q ${RES}/${BATCHES}  | python3 "$(dirname "$0")/../filter_main.py" "$FILTER" "$HISTORY_PAR_FILE" > /dev/null
 
   echo "Finished batch $RES/$BATCHES"
   ) &
